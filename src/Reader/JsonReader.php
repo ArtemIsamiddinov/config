@@ -7,14 +7,34 @@ namespace Demai\Config\Reader;
 use Demai\Config\Exception\ConfigReadException;
 use Demai\Config\Service\KeyService;
 
-class JsonReader extends FileReader
+/**
+ * Класс чтения данных из json файлов.
+ * Класс читает данные из json файла и преобразует ключи в необходимый вид.
+ *
+ * @package Demai\Config
+ * @author Artem Isamiddinov <artemisamiddinov@gmail.com>
+ * @version 1.0.0
+ */
+abstract class JsonReader extends FileReader
 {
+    /**
+     * @inheritdoc
+     */
     public function read(): array
     {
-        parent::read();
+        $data = parent::read();
+        $content = @file_get_contents($this->getSource());
 
-        $data = [];
-        $jsonData = json_decode(file_get_contents($this->getSource()), true);
+        if ($content === false) {
+            throw new ConfigReadException("Failed to read json file.");
+        }
+
+        $jsonData = @json_decode($content, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new ConfigReadException("Failed to decode data.");
+        }
+
         if (!is_array($jsonData)) {
             throw new ConfigReadException("Failed to read config file.");
         }
