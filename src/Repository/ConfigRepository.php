@@ -5,77 +5,85 @@ declare(strict_types=1);
 namespace Demai\Config\Repository;
 
 use Demai\Config\ConfigInterface;
-use Demai\Config\Exception\IncorrectConfigClass;
-use Demai\Config\Service\KeyService;
 use Demai\Config\Service\ReadService;
-use Demai\Config\Validator\ConfigInterfaceTypeValidator;
 
+/**
+ * Класс репозиторий конфигов.
+ * Репозиторий обеспечивает работу с конфигами.
+ *
+ * @package Demai\Config
+ * @author Artem Isamiddinov <artemisamiddinov@gmail.com>
+ * @version 1.0.0
+ */
 class ConfigRepository
 {
     /**
-     * @var ConfigInterface[]
+     * @var ConfigInterface[] Массив конфигов, используемый как хранилище.
      */
-    protected static array $configs = [];
-    protected ReadService $readService;
+    protected array $configs = [];
 
-    public function __construct(?ReadService $readService = null)
+    /**
+     * @param null|ReadService $readService Сервис чтения конфигов.
+     */
+    public function __construct(protected ReadService $readService)
     {
-        if (empty($readService)) {
-            $readService = new ReadService(new KeyService(), ['reader', 'initializationService']);
-        }
-
-        $this->readService = $readService;
     }
 
-    public function get(string|ConfigInterface $config): ?ConfigInterface
+    /**
+     * Получить конфиг.
+     *
+     * @param string|ConfigInterface $config Класс или имя класса для получения конфига.
+     * @return ConfigInterface Запрошенный конфиг.
+     */
+    public function get(string|ConfigInterface $config): ConfigInterface
     {
-        if (is_string($config)) {
-            $config = new $config();
+        $configClass = is_string($config) ? $config : $config::class;
+
+        if (array_key_exists($configClass, $this->configs)) {
+            return $this->configs[$configClass];
         }
 
-        if (($checkType = (new ConfigInterfaceTypeValidator())->validate($config)) !== true) {
-            throw new IncorrectConfigClass($checkType);
-        }
+        $configInstance = is_string($config) ? new $config() : $config;
 
-        if (array_key_exists($config::class, static::$configs)) {
-            return static::$configs[$config::class];
-        } else {
-            return $this->load($config);
-        }
+        return $this->load($configInstance);
     }
 
+    /**
+     * Проверить существует ли конфиг.
+     *
+     * @param string|ConfigInterface $config Класс или имя класса конфига.
+     * @return bool Существует ли конфиг.
+     */
     public function has(string|ConfigInterface $config): bool
     {
-        if (!is_string($config)) {
-            $config = $config::class;
-        }
-
-        return array_key_exists($config, static::$configs);
+        return array_key_exists(
+            is_string($config) ? $config : $config::class,
+            $this->configs
+        );
     }
 
-    public function save(ConfigInterface $config): static
+    /**
+     * Загрузить конфиг.
+     *
+     * @param ConfigInterface $config Класс загружаемого конфига.
+     * @return ConfigInterface Загруженный конфиг.
+     */
+    public function load(ConfigInterface $config): ConfigInterface
     {
-        static::$configs[$config::class] = $config;
-        return $this;
-    }
-
-    public function load(string|ConfigInterface $config): ConfigInterface
-    {
-        if (is_string($config)) {
-            $config = new $config();
-        }
-
-        if (($checkType = (new ConfigInterfaceTypeValidator())->validate($config)) !== true) {
-            throw new IncorrectConfigClass($checkType);
-        }
-
         $this->readService->read($config);
 
-        return $this->save($config)->get($config::class);
+        $this->configs[$config::class] = $config;
+
+        return $config;
     }
 
+    /**
+     * Получить ключи хранилища конфигов.
+     *
+     * @return array Массив ключей хранилища.
+     */
     public function getKeys(): array
     {
-        return array_keys(static::$configs);
+        return array_keys($this->configs);
     }
 }

@@ -24,6 +24,7 @@ interface ConfigInterface
      * - propName - Получить данные из текущего конфига
      * - cfgName - Получить конфиг
      * - cfgName.cfgName.propName - Получить данные или конфиг из указанного пути
+     *
      * @param string $name Имя параметра или путь до параметра.
      * @return mixed Параметр или дочерний конфиг.
      */
@@ -35,17 +36,22 @@ interface ConfigInterface
      * - propName - Установить данные для текущего конфига
      * - cfgName - Установить конфиг
      * - cfgName.cfgName.propName - Установить данные или конфиг по указанному пути
+     *
+     * @param string $name Имя или путь к параметру или конфигу.
+     * @param mixed $value Данные или конфиг для записи.
      */
     public function set(string $name, mixed $value): static;
 
     /**
      * Получить Reader для текущего конфига.
+     *
      * @return ReaderInterface Reader, отвечающий за чтение источника данных.
      */
     public function getReader(): ReaderInterface;
 
     /**
      * Установить Reader для текущего конфига.
+     *
      * @param ReaderInterface $reader Reader, который будет отвечать за чтение источника данных.
      * @return static
      */
@@ -53,6 +59,7 @@ interface ConfigInterface
 
     /**
      * Преобразоват конфиг в ассоциативный массив.
+     *
      * @return array Ассоциативный массив параметров и конфигов.
      */
     public function toArray(): array;

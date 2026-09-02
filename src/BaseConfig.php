@@ -13,9 +13,24 @@ use Demai\Config\Service\KeyService;
 use Demai\Config\Service\PropertyAccessService;
 use Demai\Config\Service\PropertyInitializationService;
 
+/**
+ * Абстрактный класс конфига.
+ * Позволяет упростить создание реализации конфига.
+ *
+ * @package Demai\Config
+ * @author Artem Isamiddinov <artemisamiddinov@gmail.com>
+ * @version 1.0.0
+ */
 abstract class BaseConfig implements ConfigInterface
 {
+    /**
+     * @var ReaderInterface Reader, через который происходит получение данных из источников.
+     */
     protected ReaderInterface $reader;
+
+    /**
+     * @var PropertyInitializationService Сервис для инициализации еще неинициализированных свойств.
+     */
     protected PropertyInitializationService $initializationService;
 
     public function __construct()
@@ -24,6 +39,9 @@ abstract class BaseConfig implements ConfigInterface
         $this->reader = new NullReader();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function get(string $name): mixed
     {
         $propService = new PropertyAccessService($this);
@@ -41,6 +59,9 @@ abstract class BaseConfig implements ConfigInterface
         throw new ParameterNotFoundException("Parameter {$name} not found");
     }
 
+    /**
+     * @inheritdoc
+     */
     public function set(string $name, mixed $value): static
     {
         $propService = new PropertyAccessService($this);
@@ -52,9 +73,9 @@ abstract class BaseConfig implements ConfigInterface
             if ($config instanceof ConfigInterface) {
                 $config->set($nameForConfig, $value);
                 return $this;
-            } else {
-                throw new IncorrectParameterNameException("Incorrect parameter name «{$name}» for set value");
             }
+
+            throw new IncorrectParameterNameException("Incorrect parameter name «{$name}» for set value");
         }
 
         if (!property_exists($this, $name)) {
@@ -66,17 +87,29 @@ abstract class BaseConfig implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getReader(): ReaderInterface
     {
         return $this->reader;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setReader(ReaderInterface $reader): static
     {
         $this->reader = $reader;
         return $this;
     }
 
+    /**
+     * Получить свойства и вложенные конфиги в виде ассоциативного массива.
+     * Свойства с именем reader и initializationService пропускаются.
+     *
+     * @inheritdoc
+     */
     public function toArray(): array
     {
         return ConfigDataMapper::mapConfigToArray(

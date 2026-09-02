@@ -7,15 +7,29 @@ namespace Demai\Config\Reader;
 use Demai\Config\Exception\ConfigNotFoundException;
 use Demai\Config\Exception\ConfigReadException;
 
+/**
+ * Абстрактный класс для Reader, которые получают данные из файла.
+ * Реализует часть методов для упрощенного создания конкретной реализации.
+ *
+ * @package Demai\Config
+ * @author Artem Isamiddinov <artemisamiddinov@gmail.com>
+ * @version 1.0.0
+ */
 abstract class FileReader implements ReaderInterface
 {
-    protected string $source;
-
+    /**
+     * @inheritdoc
+     */
     public function isCachable(): bool
     {
         return true;
     }
 
+    /**
+     * Прочитать файл.
+     *
+     * @inheritdoc
+     */
     public function read(): array
     {
         if (!$this->isSourceExists()) {
@@ -29,17 +43,18 @@ abstract class FileReader implements ReaderInterface
         return [];
     }
 
-    public function getSource(): string
-    {
-        return $this->source;
-    }
+    /**
+     * Получить путь к файлу.
+     *
+     * @inheritdoc
+     */
+    abstract public function getSource(): string;
 
-    public function setSource(string $source): static
-    {
-        $this->source = $source;
-        return $this;
-    }
-
+    /**
+     * Существует ли файл.
+     *
+     * @return bool
+     */
     public function isSourceExists(): bool
     {
         return file_exists($this->getSource());

@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace Demai\Config\Reader;
 
+/**
+ * Абстрактый класс для чтения источников из БД.
+ * Используется как родитель для Reader, которые выполняют чтение из БД.
+ *
+ * @package Demai\Config
+ * @author Artem Isamiddinov <artemisamiddinov@gmail.com>
+ * @version 1.0.0
+ */
 abstract class DBReader implements ReaderInterface
 {
-    protected string $source;
-
+    /**
+     * @inheritdoc
+     */
     public function isCachable(): bool
     {
         return true;
     }
 
-    public function getSource(): string
-    {
-        return $this->source;
-    }
-
-    public function setSource(string $source): static
-    {
-        $this->source = $source;
-        return $this;
-    }
+    /**
+     * Получить имя таблицы.
+     *
+     * @return string Имя таблицы.
+     */
+    abstract public function getSource(): string;
 }
