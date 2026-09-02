@@ -10,8 +10,7 @@ class ConfigInterfaceTypeValidator
 {
     public function validate(mixed $config): bool|string
     {
-        return $config instanceof ConfigInterface ? 
-            true : 
-            "Incorrect config class. Config must be instance of ConfigInterface";
+        $error = "Incorrect config class. Config must be instance of ConfigInterface";
+        return $config instanceof ConfigInterface ? true : $error;
     }
 }

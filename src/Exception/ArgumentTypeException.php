@@ -8,5 +8,4 @@ use RuntimeException;
 
 class ArgumentTypeException extends RuntimeException implements ConfigExceptionInterface
 {
-
 }

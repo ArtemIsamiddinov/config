@@ -8,5 +8,4 @@ use RuntimeException;
 
 class IncorrectParameterNameException extends RuntimeException implements ConfigExceptionInterface
 {
-
 }

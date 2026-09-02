@@ -30,8 +30,7 @@ class PropertyInitializationService
                 $this->config->set($name, null);
                 return;
             }
-        }
-        else {
+        } else {
             $this->config->set($name, array_pop($attributes)->newInstance()->value);
         }
     }

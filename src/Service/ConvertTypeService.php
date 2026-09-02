@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Demai\Config\Service;
 
 use Demai\Config\Exception\ArgumentTypeException;
-use PHPUnit\TextUI\Output\NullPrinter;
 
 class ConvertTypeService
 {
@@ -18,7 +17,7 @@ class ConvertTypeService
 
     public static function convertTo(string $builtinType, mixed $value): mixed
     {
-        return match($builtinType) {
+        return match ($builtinType) {
             'string' => static::toString($value),
             'int' => static::toInt($value),
             'float' => static::toFloat($value),
@@ -125,21 +124,23 @@ class ConvertTypeService
         return $array;
     }
 
-    public static function toArrayExt(mixed $value, ?array $default = null, array $options = [], bool $addEmpty = false): array
-    {
+    public static function toArrayExt(
+        mixed $value,
+        ?array $default = null,
+        array $options = [],
+        bool $addEmpty = false
+    ): array {
         if (is_array($value)) {
             if (empty($options)) {
                 return $value;
             }
             return filter_var_array($value, $options, $addEmpty);
-        }
-        else {
+        } else {
             if (empty($value)) {
                 if ($default !== null) {
                     return $default;
                 }
-            }
-            else {
+            } else {
                 if (is_array(($tryJson = json_decode($value, true)))) {
                     return static::toArrayExt($tryJson, $default, $options);
                 }

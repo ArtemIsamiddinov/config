@@ -23,7 +23,7 @@ class JsonReader extends FileReader
         foreach ($jsonData as $key => $itemData) {
             $data[$keyService->replaceSpecChars($key)] = $itemData;
         }
-        
+
         return $data;
     }
 }
