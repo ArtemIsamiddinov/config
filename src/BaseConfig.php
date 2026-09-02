@@ -6,17 +6,12 @@ namespace Demai\Config;
 
 use Demai\Config\Exception\IncorrectParameterNameException;
 use Demai\Config\Exception\ParameterNotFoundException;
-use Demai\Config\Parameter\ParameterInterface;
 use Demai\Config\Reader\ReaderInterface;
-use Override;
 use Demai\Config\DataMapper\ConfigDataMapper;
-use Demai\Config\Exception\IncorrectConfigClass;
 use Demai\Config\Reader\NullReader;
 use Demai\Config\Service\KeyService;
 use Demai\Config\Service\PropertyAccessService;
 use Demai\Config\Service\PropertyInitializationService;
-use Exception;
-use ReflectionProperty;
 
 abstract class BaseConfig implements ConfigInterface
 {
@@ -57,12 +52,11 @@ abstract class BaseConfig implements ConfigInterface
             if ($config instanceof ConfigInterface) {
                 $config->set($nameForConfig, $value);
                 return $this;
-            }
-            else {
+            } else {
                 throw new IncorrectParameterNameException("Incorrect parameter name «{$name}» for set value");
             }
         }
-        
+
         if (!property_exists($this, $name)) {
             throw new ParameterNotFoundException("Parameter for set value not found");
         }
@@ -86,7 +80,7 @@ abstract class BaseConfig implements ConfigInterface
     public function toArray(): array
     {
         return ConfigDataMapper::mapConfigToArray(
-            $this, 
+            $this,
             (new KeyService())->getKeys($this, ['reader', 'initializationService'])
         );
     }

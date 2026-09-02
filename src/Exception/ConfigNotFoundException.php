@@ -8,5 +8,4 @@ use RuntimeException;
 
 class ConfigNotFoundException extends RuntimeException implements ConfigExceptionInterface
 {
-
 }

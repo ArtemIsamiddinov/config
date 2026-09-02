@@ -8,5 +8,4 @@ use RuntimeException;
 
 class ConfigReadException extends RuntimeException implements ConfigExceptionInterface
 {
-
 }

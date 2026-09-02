@@ -39,8 +39,7 @@ class ConfigRepository
 
         if (array_key_exists($config::class, static::$configs)) {
             return static::$configs[$config::class];
-        }
-        else {
+        } else {
             return $this->load($config);
         }
     }
@@ -50,7 +49,7 @@ class ConfigRepository
         if (!is_string($config)) {
             $config = $config::class;
         }
-        
+
         return array_key_exists($config, static::$configs);
     }
 

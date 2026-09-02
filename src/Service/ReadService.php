@@ -31,7 +31,6 @@ final class ReadService
         $data = $this->tryReadCache($config->getReader());
 
         foreach ($this->keyService->getKeys($config, $this->skipKeys) as $key) {
-
             if ($typeService->isConfig($key)) {
                 $this->fillConfig($config->get($key));
                 continue;
@@ -42,11 +41,9 @@ final class ReadService
             }
 
             if (array_key_exists($key, $data)) {
-
                 if (($type = $typeService->getBuiltinType($key)) !== null) {
                     $config->set($key, ConvertTypeService::convertTo($type, $data[$key]));
-                }
-                else {
+                } else {
                     $config->set($key, $data[$key]);
                 }
             }
@@ -58,8 +55,7 @@ final class ReadService
         if ($reader->isCachable()) {
             if (($data = $this->getSourceData($reader->getSource())) !== null) {
                 return $data;
-            }
-            else {
+            } else {
                 return $this
                     ->setSourceData($reader->getSource(), $reader->read())
                     ->getSourceData($reader->getSource());
@@ -78,5 +74,4 @@ final class ReadService
     {
         return array_key_exists($source, $this->storage) ? $this->storage[$source] : null;
     }
-
 }

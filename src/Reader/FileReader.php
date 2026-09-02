@@ -6,7 +6,6 @@ namespace Demai\Config\Reader;
 
 use Demai\Config\Exception\ConfigNotFoundException;
 use Demai\Config\Exception\ConfigReadException;
-use Override;
 
 abstract class FileReader implements ReaderInterface
 {

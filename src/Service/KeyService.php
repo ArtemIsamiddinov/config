@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Demai\Config\Service;
 
 use Demai\Config\ConfigInterface;
-use Demai\Config\Parameter\ParameterInterface;
 use ReflectionClass;
-use ReflectionProperty;
 
 final class KeyService
 {
@@ -22,7 +20,7 @@ final class KeyService
             $keys[] = $prop->getName();
         }
 
-        return $keys;   
+        return $keys;
     }
 
     public function getCorrect(string $key): string
@@ -31,14 +29,14 @@ final class KeyService
 
         return $this->replaceSpecChars($key);
     }
-        
-        
+
+
 
     public function replaceSpecChars(string $key): string
     {
         $camelCase = preg_replace_callback(
-            '/[-_]([a-z0-9])/', 
-            fn($matches) => strtoupper($matches[1]), 
+            '/[-_]([a-z0-9])/',
+            fn($matches) => strtoupper($matches[1]),
             $key
         );
 

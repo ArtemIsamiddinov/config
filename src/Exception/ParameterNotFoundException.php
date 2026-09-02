@@ -8,5 +8,4 @@ use RuntimeException;
 
 class ParameterNotFoundException extends RuntimeException implements ConfigExceptionInterface
 {
-
 }
