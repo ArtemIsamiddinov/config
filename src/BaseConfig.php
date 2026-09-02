@@ -10,6 +10,7 @@ use Demai\Config\Parameter\ParameterInterface;
 use Demai\Config\Reader\ReaderInterface;
 use Override;
 use Demai\Config\DataMapper\ConfigDataMapper;
+use Demai\Config\Exception\IncorrectConfigClass;
 use Demai\Config\Reader\NullReader;
 use Demai\Config\Service\KeyService;
 use Demai\Config\Service\PropertyAccessService;
@@ -47,8 +48,19 @@ abstract class BaseConfig implements ConfigInterface
 
     public function set(string $name, mixed $value): static
     {
-        if (str_contains($name, '.')) {
-            throw new IncorrectParameterNameException("Incorrect paremeter name for set value");
+        $propService = new PropertyAccessService($this);
+        if ($propService->nameIsWay($name)) {
+            $way = $propService->getWay($name);
+            $nameForConfig = array_pop($way);
+
+            $config = $this->get($propService->getName($way));
+            if ($config instanceof ConfigInterface) {
+                $config->set($nameForConfig, $value);
+                return $this;
+            }
+            else {
+                throw new IncorrectParameterNameException("Incorrect parameter name «{$name}» for set value");
+            }
         }
         
         if (!property_exists($this, $name)) {
