@@ -26,7 +26,7 @@ class Container implements ContainerInterface
     public function __construct()
     {
     }
-    
+
     /**
      * @var object[] Массив объектов контейнера.
      */
@@ -144,7 +144,7 @@ class Container implements ContainerInterface
 
             if ($parameter->isDefaultValueAvailable()) {
                 $dependencies[] = $parameter->getDefaultValue();
-            } else if ($type->allowsNull()) {
+            } elseif ($type->allowsNull()) {
                 $dependencies[] = null;
             } else {
                 throw new ContainerException(

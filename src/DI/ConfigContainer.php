@@ -70,7 +70,7 @@ class ConfigContainer extends Container
             $this->readService->read($instance);
             return $instance;
         }
-        
+
         throw new InvalidClassTypeException("Class must be instance of ConfigInterface.");
     }
 }
