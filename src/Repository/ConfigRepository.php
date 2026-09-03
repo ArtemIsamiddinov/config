@@ -33,7 +33,7 @@ class ConfigRepository
     public function get(string|ConfigInterface $config): ConfigInterface
     {
         $id = is_string($config) ? $config : $config::class;
-        
+
         return $this->storage->get($id);
     }
 }
