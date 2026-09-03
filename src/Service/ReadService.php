@@ -25,9 +25,8 @@ final class ReadService
 
     /**
      * @param KeyService $keyService Сервис для работы с ключами данных.
-     * @param array $skipKeys Массив ключей, которые не будут заполняться.
      */
-    public function __construct(private KeyService $keyService, private array $skipKeys = [])
+    public function __construct(private KeyService $keyService)
     {
     }
 
@@ -53,7 +52,7 @@ final class ReadService
         $typeService = new PropertyTypeService($config);
         $data = $this->tryReadCache($config->getReader());
 
-        foreach ($this->keyService->getKeys($config, $this->skipKeys) as $key) {
+        foreach ($this->keyService->getKeys($config) as $key) {
             if ($typeService->isConfig($key)) {
                 $this->fillConfig($config->get($key));
                 continue;
@@ -81,16 +80,14 @@ final class ReadService
      */
     private function tryReadCache(ReaderInterface $reader): array
     {
-        if ($reader->isCachable()) {
-            if (($data = $this->getSourceData($reader->getSource())) !== null) {
-                return $data;
-            }
-
-            return $this
-                ->setSourceData($reader->getSource(), $reader->read())
-                ->getSourceData($reader->getSource());
+        if (($data = $this->getSourceData($reader->getSource())) !== null) {
+            return $data;
         }
-        return $reader->read();
+
+        $data = $reader->read();
+        $this->setSourceData($reader->getSource(), $data);
+
+        return $data;
     }
 
     /**

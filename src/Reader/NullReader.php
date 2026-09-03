@@ -17,14 +17,6 @@ class NullReader implements ReaderInterface
     /**
      * @inheritdoc
      */
-    public function isCachable(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function read(): array
     {
         return [];

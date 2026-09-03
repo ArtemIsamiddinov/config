@@ -63,4 +63,11 @@ interface ConfigInterface
      * @return array Ассоциативный массив параметров и конфигов.
      */
     public function toArray(): array;
+
+    /**
+     * Получить ключи свойств, которые надо пропускать.
+     *
+     * @return array
+     */
+    public function getSkipKeys(): array;
 }

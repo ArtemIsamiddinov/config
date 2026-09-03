@@ -21,12 +21,12 @@ class KeyService
      * Получить ключи конфига.
      *
      * @param ConfigInterface $config Конфиг, у которого будут запрошены ключи.
-     * @param array $skipKeys Массив ключей, которые необходимо пропустить.
      * @return array Массив ключей конфига.
      */
-    public function getKeys(ConfigInterface $config, array $skipKeys = []): array
+    public function getKeys(ConfigInterface $config): array
     {
         $keys = [];
+        $skipKeys = $config->getSkipKeys();
         foreach ((new ReflectionClass($config))->getProperties() as $prop) {
             if (in_array($prop->getName(), $skipKeys)) {
                 continue;
