@@ -15,14 +15,6 @@ namespace Demai\Config\Reader;
 abstract class DBReader implements ReaderInterface
 {
     /**
-     * @inheritdoc
-     */
-    public function isCachable(): bool
-    {
-        return true;
-    }
-
-    /**
      * Получить имя таблицы.
      *
      * @return string Имя таблицы.

@@ -12,6 +12,7 @@ use Demai\Config\Reader\NullReader;
 use Demai\Config\Service\KeyService;
 use Demai\Config\Service\PropertyAccessService;
 use Demai\Config\Service\PropertyInitializationService;
+use Override;
 
 /**
  * Абстрактный класс конфига.
@@ -114,7 +115,13 @@ abstract class BaseConfig implements ConfigInterface
     {
         return ConfigDataMapper::mapConfigToArray(
             $this,
-            (new KeyService())->getKeys($this, ['reader', 'initializationService'])
+            (new KeyService())->getKeys($this)
         );
+    }
+
+    #[Override]
+    public function getSkipKeys(): array
+    {
+        return ['reader', 'initializationService'];
     }
 }

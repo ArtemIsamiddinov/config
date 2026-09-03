@@ -18,14 +18,6 @@ use Demai\Config\Exception\ConfigReadException;
 abstract class FileReader implements ReaderInterface
 {
     /**
-     * @inheritdoc
-     */
-    public function isCachable(): bool
-    {
-        return true;
-    }
-
-    /**
      * Прочитать файл.
      *
      * @inheritdoc

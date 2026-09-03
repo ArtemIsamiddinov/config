@@ -15,13 +15,6 @@ namespace Demai\Config\Reader;
 interface ReaderInterface
 {
     /**
-     * Является ли кэшируемым
-     *
-     * @return bool
-     */
-    public function isCachable(): bool;
-
-    /**
      * Получить источник данных для чтения.
      *
      * @return string Путь к файлу/Имя таблицы и т.д.
