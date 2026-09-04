@@ -1,0 +1,28 @@
+{
+    "name": "demai/config",
+    "description": "package for fast config files work",
+    "type": "library",
+    "license": "GPL-3.0-only",
+    "version": "1.0.0",
+    "keywords": ["config", "configuration", "env"],
+    "autoload": {
+        "psr-4": {
+            "Demai\\Config\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Artem Isamiddinov",
+            "email": "artemisamiddinov@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "psr/container": "^2.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^4.0",
+        "phpunit/phpunit": "^11.5"
+    }
+}
