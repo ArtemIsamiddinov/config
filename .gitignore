@@ -1,0 +1,15 @@
+/*
+
+!/.gitignore
+!/composer.json
+
+!/src/
+!/LICENSE
+!/README.md
+
+!/tests/
+!/phpunit.xml
+
+!/.github/
+!/.github/workflows/
+!/.github/workflows/github.yml
