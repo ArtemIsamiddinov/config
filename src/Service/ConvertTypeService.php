@@ -123,6 +123,14 @@ class ConvertTypeService
     {
         $value = static::trimIfString($value);
 
+        if (in_array($value, ['Y', 'y'])) {
+            return true;
+        }
+
+        if (in_array($value, ['N', 'n'])) {
+            return false;
+        }
+
         if (($validateValue = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) !== null) {
             return $validateValue;
         }
