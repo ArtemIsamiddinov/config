@@ -7,6 +7,7 @@ namespace Demai\Config\Service;
 use Demai\Config\ConfigInterface;
 use ReflectionProperty;
 use Demai\Config\Attribute\DefaultValue;
+use Demai\Config\Exception\InitializePropertyException;
 
 /**
  * Сервис для инициализации свойств.
@@ -46,6 +47,8 @@ class PropertyInitializationService
                 $this->config->set($name, null);
                 return;
             }
+
+            throw new InitializePropertyException("Service can't resolve default value for property «{$name}»");
         }
 
         $this->config->set($name, array_pop($attributes)->newInstance()->value);
